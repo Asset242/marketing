@@ -1,8 +1,8 @@
 <?php 
 define('DB_HOST','localhost');
-define('DB_USER','root');
-define('DB_PASS','');
-define('DB_NAME','marketing');
+define('DB_USER','marketing_user');
+define('DB_PASS','marketing%%%');
+define('DB_NAME','marketing_db');
 // Establish database connection.
 try
 {

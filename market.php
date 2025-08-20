@@ -8,9 +8,9 @@ $txref = isset($_GET['trxid']) ? trim($_GET['trxid']) : null;
 $trfsrc = isset($_GET['trfsrc']) ? trim($_GET['trfsrc']) : null;
 
 // Get msisdn from request header (assuming header name is 'Msisdn')
-$headers = getallheaders();
-// $msisdn = isset($headers['Msisdn']) ? trim($headers['Msisdn']) : null;
-$msisdn = 2348033705129;
+$headers = array_change_key_case(getallheaders(), CASE_LOWER);
+$msisdn = isset($headers['msisdn']) ? trim($headers['msisdn']) : null;
+// $msisdn = 2348033705129;
 // $msisdn = 2348033705120;
 
 
