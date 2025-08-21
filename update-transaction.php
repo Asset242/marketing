@@ -32,24 +32,28 @@ try {
     }
 
     $msisdn = trim($data['msisdn']);
-    // $trxId  = trim($data['trxId']);
 
-    // Update the transaction status
+    // Update only the latest transaction based on created_at
     $sql = "UPDATE transaction 
             SET status = 1 
-            WHERE msisdn = :msisdn 
-            ";
-//  -- AND trx_id = :trx_id
+            WHERE id = (
+                SELECT id FROM (
+                    SELECT id FROM transaction 
+                    WHERE msisdn = :msisdn 
+                    ORDER BY created_at DESC 
+                    LIMIT 1
+                ) t
+            )";
+
     $stmt = $dbh->prepare($sql);
     $stmt->bindParam(':msisdn', $msisdn, PDO::PARAM_STR);
-    // -- $stmt->bindParam(':trx_id', $trxId, PDO::PARAM_STR);
     $stmt->execute();
 
     if ($stmt->rowCount() > 0) {
         // Successfully updated
         echo json_encode([
             "status" => "success",
-            "message" => "Transaction updated successfully"
+            "message" => "Latest transaction updated successfully"
         ]);
     } else {
         // No matching record
