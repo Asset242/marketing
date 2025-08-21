@@ -22,7 +22,7 @@ try {
     }
 
     // Required fields
-    if (empty($data['msisdn']) || empty($data['trxId'])) {
+    if (empty($data['msisdn'])) {
         http_response_code(400);
         echo json_encode([
             "status" => "error",
@@ -32,16 +32,17 @@ try {
     }
 
     $msisdn = trim($data['msisdn']);
-    $trxId  = trim($data['trxId']);
+    // $trxId  = trim($data['trxId']);
 
     // Update the transaction status
     $sql = "UPDATE transaction 
             SET status = 1 
-            WHERE msisdn = :msisdn AND trx_id = :trx_id";
-
+            WHERE msisdn = :msisdn 
+            ";
+//  -- AND trx_id = :trx_id
     $stmt = $dbh->prepare($sql);
     $stmt->bindParam(':msisdn', $msisdn, PDO::PARAM_STR);
-    $stmt->bindParam(':trx_id', $trxId, PDO::PARAM_STR);
+    // -- $stmt->bindParam(':trx_id', $trxId, PDO::PARAM_STR);
     $stmt->execute();
 
     if ($stmt->rowCount() > 0) {
